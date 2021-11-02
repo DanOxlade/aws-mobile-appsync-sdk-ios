@@ -17,7 +17,7 @@ class UserPoolsBasedConnectionPool: SubscriptionConnectionPool {
         self.endPointToProvider = [:]
     }
 
-    func connection(for url: URL, connectionType: SubscriptionConnectionType) -> SubscriptionConnection {
+    func connection(for url: URL, connectionType: SubscriptionConnectionType, overrideConnectionTimeoutInSeconds: Int?) -> SubscriptionConnection {
         if let connectionProvider = endPointToProvider[url.absoluteString] {
             return AppSyncSubscriptionConnection(provider: connectionProvider)
         }
@@ -26,7 +26,8 @@ class UserPoolsBasedConnectionPool: SubscriptionConnectionPool {
         let authInterceptor = OIDCAuthInterceptor(authProvider)
         let connectionProvider = ConnectionProviderFactory.createConnectionProvider(for: url,
                                                                                     authInterceptor: authInterceptor,
-                                                                                    connectionType: connectionType)
+                                                                                    connectionType: connectionType,
+                                                                                       overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
         endPointToProvider[url.absoluteString] = connectionProvider
 
         return AppSyncSubscriptionConnection(provider: connectionProvider)

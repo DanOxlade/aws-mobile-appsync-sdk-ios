@@ -17,12 +17,13 @@ class APIKeyBasedConnectionPool: SubscriptionConnectionPool {
         self.endPointToProvider = [:]
     }
 
-    func connection(for url: URL, connectionType: SubscriptionConnectionType) -> SubscriptionConnection {
+    func connection(for url: URL, connectionType: SubscriptionConnectionType, overrideConnectionTimeoutInSeconds: Int?) -> SubscriptionConnection {
 
         let connectionProvider = endPointToProvider[url.absoluteString] ??
             ConnectionProviderFactory.createConnectionProvider(for: url,
-                                                               authInterceptor: APIKeyAuthInterceptor(apiKeyProvider.getAPIKey()),
-                                                               connectionType: connectionType)
+                                                                  authInterceptor: APIKeyAuthInterceptor(apiKeyProvider.getAPIKey()),
+                                                                  connectionType: connectionType,
+                                                                  overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
         endPointToProvider[url.absoluteString] = connectionProvider
         let connection = AppSyncSubscriptionConnection(provider: connectionProvider)
         return connection

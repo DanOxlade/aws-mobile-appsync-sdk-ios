@@ -19,7 +19,7 @@ class BasicSubscriptionConnectionFactory: SubscriptionConnectionFactory {
     let url: URL
     let retryStrategy: AWSAppSyncRetryStrategy
     let authType: AWSAppSyncAuthType
-
+    
     init (url: URL,
           authType: AWSAppSyncAuthType,
           retryStrategy: AWSAppSyncRetryStrategy,
@@ -52,8 +52,8 @@ class BasicSubscriptionConnectionFactory: SubscriptionConnectionFactory {
         
     }
 
-    func connection(connectionType: SubscriptionConnectionType) -> SubscriptionConnection? {
-        let connection = connectionPool(for: authType)?.connection(for: url, connectionType: connectionType)
+    func connection(connectionType: SubscriptionConnectionType, overrideConnectionTimeoutInSeconds: Int?) -> SubscriptionConnection? {
+        let connection = connectionPool(for: authType)?.connection(for: url, connectionType: connectionType, overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
         if let retryableConnection = connection as? RetryableConnection {
             let retryHandler = AWSAppSyncRetryHandler(retryStrategy: retryStrategy)
             retryableConnection.addRetryHandler(handler: retryHandler)
@@ -61,8 +61,8 @@ class BasicSubscriptionConnectionFactory: SubscriptionConnectionFactory {
         return connection
     }
 
-    func connection(for url: URL, authType: AWSAppSyncAuthType, connectionType: SubscriptionConnectionType) -> SubscriptionConnection? {
-        return connectionPool(for: authType)?.connection(for: url, connectionType: connectionType)
+    func connection(for url: URL, authType: AWSAppSyncAuthType, connectionType: SubscriptionConnectionType, overrideConnectionTimeoutInSeconds: Int?) -> SubscriptionConnection? {
+        return connectionPool(for: authType)?.connection(for: url, connectionType: connectionType, overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
     }
 
     // MARK: - Private Methods

@@ -10,6 +10,7 @@ import AWSCore
 public class AWSAppSyncClientConfiguration {
     private(set) var url: URL
     private(set) var networkTransport: AWSNetworkTransport
+    private(set) var overrideConnectionTimeoutInSeconds: Int?
     @available(*, deprecated, message: "Use cacheConfiguration instead")
     private(set) var databaseURL: URL?
     private(set) var cacheConfiguration: AWSAppSyncCacheConfiguration?
@@ -47,7 +48,8 @@ public class AWSAppSyncClientConfiguration {
                             connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
                             s3ObjectManager: AWSS3ObjectManager? = nil,
                             presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil,
-                            retryStrategy: AWSAppSyncRetryStrategy = .exponential) {
+                            retryStrategy: AWSAppSyncRetryStrategy = .exponential,
+                            overrideConnectionTimeoutInSeconds: Int? = nil) {
         let urlFromConfig = appSyncServiceConfig.endpoint
         let regionFromConfig = appSyncServiceConfig.region
 
@@ -58,7 +60,8 @@ public class AWSAppSyncClientConfiguration {
                   connectionStateChangeHandler: connectionStateChangeHandler,
                   s3ObjectManager: s3ObjectManager,
                   presignedURLClient: presignedURLClient,
-                  retryStrategy: retryStrategy)
+                  retryStrategy: retryStrategy,
+                  overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
     }
 
     /// Creates a configuration object for the `AWSAppSyncClient` using a caller-specified AWSNetworkTransport.
@@ -80,7 +83,8 @@ public class AWSAppSyncClientConfiguration {
                 connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
                 s3ObjectManager: AWSS3ObjectManager? = nil,
                 presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil,
-                retryStrategy: AWSAppSyncRetryStrategy = .exponential) {
+                retryStrategy: AWSAppSyncRetryStrategy = .exponential,
+                overrideConnectionTimeoutInSeconds: Int? = nil) {
         self.url = url
         self.cacheConfiguration = cacheConfiguration
         self.store = AWSAppSyncClientConfiguration.makeApolloStore(for: cacheConfiguration?.queries)
@@ -90,6 +94,7 @@ public class AWSAppSyncClientConfiguration {
         self.presignedURLClient = presignedURLClient
         self.connectionStateChangeHandler = connectionStateChangeHandler
         self.retryStrategy = retryStrategy
+        self.overrideConnectionTimeoutInSeconds = overrideConnectionTimeoutInSeconds
     }
 
     // MARK: - Initializers that derive the network transport from auth provider configuration
@@ -139,7 +144,8 @@ public class AWSAppSyncClientConfiguration {
                             connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
                             s3ObjectManager: AWSS3ObjectManager? = nil,
                             presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil,
-                            retryStrategy: AWSAppSyncRetryStrategy = .exponential) throws {
+                            retryStrategy: AWSAppSyncRetryStrategy = .exponential,
+                            overrideConnectionTimeoutInSeconds: Int? = nil) throws {
 
         let apiKeyFromConfig = appSyncServiceConfig.apiKey
         let authTypeFromConfig = appSyncServiceConfig.authType
@@ -160,7 +166,8 @@ public class AWSAppSyncClientConfiguration {
                       connectionStateChangeHandler: connectionStateChangeHandler,
                       s3ObjectManager: s3ObjectManager,
                       presignedURLClient: presignedURLClient,
-                      retryStrategy: retryStrategy)
+                      retryStrategy: retryStrategy,
+                      overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
     }
 
     /// Creates a configuration object for the `AWSAppSyncClient`.
@@ -202,7 +209,8 @@ public class AWSAppSyncClientConfiguration {
                             connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
                             s3ObjectManager: AWSS3ObjectManager? = nil,
                             presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil,
-                            retryStrategy: AWSAppSyncRetryStrategy = .exponential) throws {
+                            retryStrategy: AWSAppSyncRetryStrategy = .exponential,
+                            overrideConnectionTimeoutInSeconds: Int? = nil) throws {
         let authType: AWSAppSyncAuthType
 
         if apiKeyAuthProvider != nil {
@@ -233,7 +241,8 @@ public class AWSAppSyncClientConfiguration {
                       connectionStateChangeHandler: connectionStateChangeHandler,
                       s3ObjectManager: s3ObjectManager,
                       presignedURLClient: presignedURLClient,
-                      retryStrategy: retryStrategy)
+                      retryStrategy: retryStrategy,
+                      overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
     }
 
     // MARK: - Designated initializer that derives network transport from auth configuration
@@ -271,7 +280,8 @@ public class AWSAppSyncClientConfiguration {
                  connectionStateChangeHandler: ConnectionStateChangeHandler?,
                  s3ObjectManager: AWSS3ObjectManager?,
                  presignedURLClient: AWSS3ObjectPresignedURLGenerator?,
-                 retryStrategy: AWSAppSyncRetryStrategy = .exponential) throws {
+                 retryStrategy: AWSAppSyncRetryStrategy = .exponential,
+                 overrideConnectionTimeoutInSeconds: Int? = nil) throws {
 
         // Passthrough properties
         self.connectionStateChangeHandler = connectionStateChangeHandler
@@ -280,6 +290,7 @@ public class AWSAppSyncClientConfiguration {
         self.s3ObjectManager = s3ObjectManager
         self.url = url
         self.authType = authType
+        self.overrideConnectionTimeoutInSeconds = overrideConnectionTimeoutInSeconds
 
         // Initialized objects
         self.store = AWSAppSyncClientConfiguration.makeApolloStore(for: cacheConfiguration?.queries)

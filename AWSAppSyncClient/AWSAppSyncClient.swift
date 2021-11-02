@@ -43,7 +43,7 @@ public class AWSAppSyncClient {
     public var offlineMutationDelegate: AWSAppSyncOfflineMutationDelegate?
     private var mutationQueue: AWSPerformMutationQueue!
     var retryStrategy: AWSAppSyncRetryStrategy
-
+    var overrideConnectionTimeoutInSeconds: Int?
     var prefixTrackerKey: String?
     var prefixTrackerValue: String?
 
@@ -99,7 +99,7 @@ public class AWSAppSyncClient {
         self.connectionStateChangeHandler = appSyncConfig.connectionStateChangeHandler
         
         self.retryStrategy = appSyncConfig.retryStrategy
-
+        self.overrideConnectionTimeoutInSeconds = appSyncConfig.overrideConnectionTimeoutInSeconds
         self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: appSyncConfig.store)
         self.subscriptionConnectionFactory = appSyncConfig.subscriptionConnectionFactory
         NetworkReachabilityNotifier.setupShared(
@@ -237,7 +237,7 @@ public class AWSAppSyncClient {
                                                              queue: DispatchQueue = DispatchQueue.main,
                                                              statusChangeHandler: SubscriptionStatusChangeHandler? = nil,
                                                              resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
-        let connection = self.subscriptionConnectionFactory?.connection(connectionType: .appSyncRealtime)
+        let connection = self.subscriptionConnectionFactory?.connection(connectionType: .appSyncRealtime, overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
         return AWSAppSyncSubscriptionWatcher(connection: connection!,
                                              store: self.store!,
                                              subscriptionsQueue: self.subscriptionsQueue,
@@ -251,7 +251,7 @@ public class AWSAppSyncClient {
                                                                                   queue: DispatchQueue = DispatchQueue.main,
                                                                                   connectCallback: @escaping (() -> Void),
                                                                                   resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
-        let connection = self.subscriptionConnectionFactory?.connection(connectionType: .appSyncRealtime)
+        let connection = self.subscriptionConnectionFactory?.connection(connectionType: .appSyncRealtime, overrideConnectionTimeoutInSeconds: overrideConnectionTimeoutInSeconds)
         return AWSAppSyncSubscriptionWatcher(connection: connection!,
                                              store: self.store!,
                                              subscriptionsQueue: self.subscriptionsQueue,
