@@ -23,7 +23,7 @@ PODS:
   - SwiftLint (0.44.0)
 
 DEPENDENCIES:
-  - AppSyncRealTimeClient (~> 1.4)
+  - AppSyncRealTimeClient (from `https://github.com/aws-amplify/aws-appsync-realtime-client-ios.git`, branch `feat/connection-timeout`)
   - AWSCore (~> 2.26.0)
   - AWSMobileClient (~> 2.26.0)
   - AWSS3 (~> 2.26.0)
@@ -33,7 +33,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AppSyncRealTimeClient
     - AWSAuthCore
     - AWSCognitoIdentityProvider
     - AWSCognitoIdentityProviderASF
@@ -44,6 +43,16 @@ SPEC REPOS:
     - SQLite.swift
     - Starscream
     - SwiftLint
+
+EXTERNAL SOURCES:
+  AppSyncRealTimeClient:
+    :branch: feat/connection-timeout
+    :git: https://github.com/aws-amplify/aws-appsync-realtime-client-ios.git
+
+CHECKOUT OPTIONS:
+  AppSyncRealTimeClient:
+    :commit: fc84acdb8493fcfe8e721ea18412b044b2e95875
+    :git: https://github.com/aws-amplify/aws-appsync-realtime-client-ios.git
 
 SPEC CHECKSUMS:
   AppSyncRealTimeClient: 2b4482b1770a3e5cf64f9714a6d198550017b5a2
@@ -58,6 +67,6 @@ SPEC CHECKSUMS:
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: 51402155c984b01c9259c5c9aff2083760f75bce
+PODFILE CHECKSUM: 8c0e179e7fd4c21efee8d2276447d1543b6d0fb2
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
