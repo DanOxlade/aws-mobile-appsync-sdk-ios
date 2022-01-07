@@ -23,7 +23,7 @@ PODS:
   - SwiftLint (0.44.0)
 
 DEPENDENCIES:
-  - AppSyncRealTimeClient (~> 1.6.0)
+  - AppSyncRealTimeClient (from `https://github.com/DanOxlade/aws-appsync-realtime-client-ios`)
   - AWSCore (~> 2.26.0)
   - AWSMobileClient (~> 2.26.0)
   - AWSS3 (~> 2.26.0)
@@ -44,6 +44,10 @@ SPEC REPOS:
     - SQLite.swift
     - Starscream
     - SwiftLint
+
+EXTERNAL SOURCES:
+  AppSyncRealTimeClient:
+    :git: https://github.com/DanOxlade/aws-appsync-realtime-client-ios
 
 SPEC CHECKSUMS:
   AppSyncRealTimeClient: 2b4482b1770a3e5cf64f9714a6d198550017b5a2
