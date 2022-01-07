@@ -20,7 +20,7 @@ target "AWSAppSyncTestCommon" do
   # We directly access a database connection to verify certain initialization
   # setups
   pod "SQLite.swift", "~> 0.12.2"
-  pod "AppSyncRealTimeClient", "~> 1.4"
+  pod "AppSyncRealTimeClient", 'https://github.com/DanOxlade/aws-appsync-realtime-client-ios.git'
 end
 
 target "AWSAppSyncTestApp" do
