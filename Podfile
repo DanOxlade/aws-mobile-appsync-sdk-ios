@@ -9,7 +9,7 @@ target "AWSAppSync" do
   pod "AWSCore", "~> #{AWS_SDK_VERSION}"
   pod "SQLite.swift", "~> 0.12.2"
   pod "ReachabilitySwift", "5.0.0"
-  pod "AppSyncRealTimeClient", "~> 1.4"
+  pod "AppSyncRealTimeClient", :git => 'https://github.com/DanOxlade/aws-appsync-realtime-client-ios.git'
 
   pod "SwiftLint"
 end
